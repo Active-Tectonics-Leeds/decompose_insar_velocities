@@ -82,6 +82,8 @@ par.ref_type = getparval(cfgcell,'ref_type',[]);
 par.ref_poly_order = getparval(cfgcell,'ref_poly_order',[]);
 par.ref_filter_window_size = getparval(cfgcell,'ref_filter_window_size',[]);
 par.ref_station_radius = getparval(cfgcell,'ref_station_radius',0);
+par.store_ref_planes = getparval(cfgcell,'store_ref_planes',[]);
+par.use_stored_ref_planes = getparval(cfgcell,'use_stored_ref_planes',[]);
 
 % use mask
 par.use_mask = getparval(cfgcell,'use_mask',0);
@@ -96,6 +98,10 @@ par.merge_tracks_along_func = getparval(cfgcell,'merge_tracks_along_func',0);
 
 % merge across-track
 par.merge_tracks_across = getparval(cfgcell,'merge_tracks_across',0);
+par.ref_xmin = getparval(cfgcell,'ref_xmin',0)
+par.ref_xmax = getparval(cfgcell,'ref_xmax',0)
+par.ref_ymin = getparval(cfgcell,'ref_ymin',0)
+par.ref_ymax = getparval(cfgcell,'ref_ymax',0)
 
 % reference frame bias
 par.plate_motion = getparval(cfgcell,'plate_motion',0);
@@ -130,6 +136,10 @@ par.save_frames = getparval(cfgcell,'save_frames',0);
 % save overlaps as text files for plotting histograms
 par.save_overlaps = getparval(cfgcell,'save_overlaps',0);
 
+% climits
+par.plt_cmin = getparval(cfgcell,'plt_cmin',-10)
+par.plt_cmax = getparval(cfgcell,'plt_cmax',10)
+
 % plot faults
 par.plt_faults = getparval(cfgcell,'plt_faults',0);
 
@@ -159,6 +169,12 @@ par.plt_ref_gnss_indv = getparval(cfgcell,'plt_ref_gnss_indv',0);
 
 % plot all referencing surfaces
 par.plt_ref_gnss_surfaces = getparval(cfgcell,'plt_ref_gnss_surfaces',0);
+
+% plot gnss in los
+par.plt_ref_gnss_los = getparval(cfgcell,'plt_ref_gnss_los',0);
+
+% output gnss in los as grd
+par.grd_ref_gnss_los = getparval(cfgcell,'grd_ref_gnss_los',0);
 
 % plot ascending and descending masks
 par.plt_mask_asc_desc = getparval(cfgcell,'plt_mask_asc_desc',0);

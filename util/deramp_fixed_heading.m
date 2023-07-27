@@ -54,8 +54,8 @@ if plt == 1
     % set plotting parameters
     lonlim = [min(x) max(x)];
     latlim = [min(y) max(y)];
-    clim = [-10 10];
-    load('/nfs/a285/homes/eearw/gmt/colourmaps/vik/vik.mat')
+    clim = [par.plt_cmin par.plt_cmax];
+    load('vik.mat')
 
     f = figure();
     f.Position([1 3 4]) = [600 1600 600];

@@ -69,7 +69,7 @@ for ii = 1:size(vel,3)
     if par.plt_plate_motion_indv == 1
 
         % limits
-        clim = [-10 10];
+        clim = [par.plt_cmin par.plt_cmax];
         [~,x_ind,y_ind] = crop_nans(vel(:,:,ii),x,y);
         lonlim = x([x_ind(1) x_ind(end)]); latlim = y([y_ind(1) y_ind(end)]);
         
@@ -109,7 +109,7 @@ if par.plt_plate_motion == 1
     % set plotting parameters
     lonlim = [min(x) max(x)];
     latlim = [min(y) max(y)];
-    clim = [-10 10];
+    clim = [par.plt_cmin par.plt_cmax];
     
     % reload borders for ease
     if par.plt_borders == 1
@@ -117,6 +117,21 @@ if par.plt_plate_motion == 1
     else
         borders = [];
     end
+    
+    f = figure();
+    f.Position([1 3 4]) = [600 1600 600];
+    t = tiledlayout(1,2,'TileSpacing','compact');
+    title(t,'Plate Motion')
+    
+    % plot ascending tracks
+    t(1) = nexttile; hold on
+    plt_data(x,y,plate_E,lonlim,latlim,clim,'East (mm/yr)',[],borders)
+    colormap(t(1),cpt.vik)
+    
+    % plot descending tracks
+    t(2) = nexttile; hold on
+    plt_data(x,y,plate_N,lonlim,latlim,clim,'North (mm/yr)',[],borders)
+    colormap(t(2),cpt.vik)
     
     f = figure();
     f.Position([1 3 4]) = [600 1600 600];

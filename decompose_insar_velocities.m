@@ -79,8 +79,8 @@ end
     asc_frames_ind,desc_frames_ind,fault_trace,gnss,borders] = load_inputs(par,insarpar);
 
 % colour palettes  (https://www.fabiocrameri.ch/colourmaps/)
-vik = importdata('plotting/cpt/vik.mat');
-batlow = importdata('plotting/cpt/batlow.mat');
+vik = load('vik.mat');
+batlow = load('batlow.mat');
 cpt.vik = vik; cpt.batlow = batlow; 
 clear vik batlow
 
@@ -91,7 +91,7 @@ if par.plt_input_vels == 1
     disp('Plotting preview of input velocities')
     
     plt_asc_desc_cells(par,lon,lat,vel,mask,asc_frames_ind,...
-        desc_frames_ind,cpt.vik,[-10 10],borders,'Input velocities')
+        desc_frames_ind,cpt.vik,[par.plt_cmin par.plt_cmax],borders,'Input velocities')
     
 end
 
@@ -234,15 +234,21 @@ end
 % Shift InSAR velocities into the same reference frame as the GNSS
 % velocities. Method is given by par.ref2gnss. 
 
+if par.merge_tracks_along == 2
+    outdirs = tracks;
+else
+    outdirs = frames;
+end
+
 if par.ref2gnss == 1
     disp('Referencing InSAR to GNSS station velocities')
     vel_regrid = ref_to_gnss_stations(par,cpt,xx_regrid,yy_regrid,vel_regrid,...
-        compE_regrid,compN_regrid,gnss,asc_frames_ind,desc_frames_ind);   
+        compE_regrid,compN_regrid,gnss,asc_frames_ind,desc_frames_ind,outdirs);   
     
 elseif par.ref2gnss == 2
     disp('Referencing InSAR to interpolated GNSS velocities')
-    vel_regrid = ref_to_gnss_fields(par,cpt,xx_regrid,yy_regrid,vel_regrid,...
-        compE_regrid,compN_regrid,gnss_E,gnss_N,asc_frames_ind,desc_frames_ind);
+    [vel_regrid, gnss] = ref_to_gnss_fields(par,cpt,xx_regrid,yy_regrid,vel_regrid,...
+        compE_regrid,compN_regrid,gnss_E,gnss_N,asc_frames_ind,desc_frames_ind,outdirs);
     
 end
 
@@ -304,7 +310,7 @@ disp('Plotting decomposed velocities')
 
 lonlim = [min(x_regrid) max(x_regrid)];
 latlim = [min(y_regrid) max(y_regrid)];
-clim = [-10 10];
+clim = [par.plt_cmin par.plt_cmax];
 
 % East and vertical
 f = figure();
@@ -432,7 +438,7 @@ end
 
 % save frames / tracks
 if par.save_frames == 1
-    
+    -40 40
     % toggle between tracks and frames depending on if the merge has
     % happened
     if par.merge_tracks_along == 2
@@ -453,7 +459,9 @@ if par.save_frames == 1
     for ii = 1:nframes
         
         % create frame directory
-        mkdir([par.out_path outdirs{ii}])
+        if ~isfolder([par.out_path outdirs{ii}])
+            mkdir([par.out_path outdirs{ii}])
+        end
 
         % crop to minimise file size
         [~,x_ind,y_ind,x_crop,y_crop] = crop_nans(vel_regrid(:,:,ii),x_regrid,y_regrid);

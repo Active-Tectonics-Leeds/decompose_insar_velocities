@@ -142,8 +142,8 @@ los_av_desc = mean(vel(:,:,tracks_desc_ind),3,'omitnan');
 % set plotting parameters
 lonlim = [min(x) max(x)];
 latlim = [min(y) max(y)];
-clim = [-10 10];
-load('/nfs/a285/homes/eearw/gmt/colourmaps/vik/vik.mat')
+clim = [par.plt_cmin par.plt_cmax];
+load('vik.mat')
 
 % reload borders for ease
 if par.plt_borders == 1
@@ -169,8 +169,33 @@ colormap(t(2),vik)
 %% attempt a simple decomposition with a shared reference area
 
 % new reference area
-ref_xmin = 52.1528; ref_xmax = 52.6978;
-ref_ymin = 31.1667; ref_ymax = 31.7523;
+if par.ref_xmin == 0;
+    ref_xmin = min(x(:));
+    fprintf('Invalid ref_xmin. Setting to %.2f\n', ref_xmin)
+else
+    ref_xmin = par.ref_xmin;
+end
+
+if par.ref_xmax == 0;
+    ref_xmax = max(x(:));
+    fprintf('Invalid ref_xmax. Setting to %.2f\n', ref_xmax)
+else
+    ref_xmax = par.ref_xmax;
+end
+
+if par.ref_ymin == 0;
+    ref_ymin = min(y(:));
+    fprintf('Invalid ref_ymin. Setting to %.2f\n', ref_ymin)
+else
+    ref_ymin = par.ref_ymin;
+end
+
+if par.ref_ymax == 0;
+    ref_ymax = max(y(:));
+    fprintf('Invalid ref_ymax. Setting to %.2f\n', ref_ymax)
+else
+    ref_ymax = par.ref_ymax;
+end
 
 % get indices
 [~,ref_xmin_ind] = min(abs(x-ref_xmin));
@@ -215,7 +240,7 @@ for jj = 1:size(los_av_asc,1)
     end
 end
 
-clim = [-10 10];
+clim = [par.plt_cmin par.plt_cmax];
 
 f = figure();
 f.Position([1 3 4]) = [600 1600 600];
