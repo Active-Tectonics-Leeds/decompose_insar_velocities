@@ -82,6 +82,8 @@ par.ref_type = getparval(cfgcell,'ref_type',[]);
 par.ref_poly_order = getparval(cfgcell,'ref_poly_order',[]);
 par.ref_filter_window_size = getparval(cfgcell,'ref_filter_window_size',[]);
 par.ref_station_radius = getparval(cfgcell,'ref_station_radius',0);
+par.refmask_min = getparval(cfgcell,'refmask_min',-10);
+par.refmask_max = getparval(cfgcell,'refmask_max',10);
 par.store_ref_planes = getparval(cfgcell,'store_ref_planes',[]);
 par.use_stored_ref_planes = getparval(cfgcell,'use_stored_ref_planes',[]);
 
@@ -98,10 +100,10 @@ par.merge_tracks_along_func = getparval(cfgcell,'merge_tracks_along_func',0);
 
 % merge across-track
 par.merge_tracks_across = getparval(cfgcell,'merge_tracks_across',0);
-par.ref_xmin = getparval(cfgcell,'ref_xmin',0)
-par.ref_xmax = getparval(cfgcell,'ref_xmax',0)
-par.ref_ymin = getparval(cfgcell,'ref_ymin',0)
-par.ref_ymax = getparval(cfgcell,'ref_ymax',0)
+par.ref_xmin = getparval(cfgcell,'ref_xmin',0);
+par.ref_xmax = getparval(cfgcell,'ref_xmax',0);
+par.ref_ymin = getparval(cfgcell,'ref_ymin',0);
+par.ref_ymax = getparval(cfgcell,'ref_ymax',0);
 
 % reference frame bias
 par.plate_motion = getparval(cfgcell,'plate_motion',0);
@@ -137,8 +139,8 @@ par.save_frames = getparval(cfgcell,'save_frames',0);
 par.save_overlaps = getparval(cfgcell,'save_overlaps',0);
 
 % climits
-par.plt_cmin = getparval(cfgcell,'plt_cmin',-10)
-par.plt_cmax = getparval(cfgcell,'plt_cmax',10)
+par.plt_cmin = getparval(cfgcell,'plt_cmin',-10);
+par.plt_cmax = getparval(cfgcell,'plt_cmax',10);
 
 % plot faults
 par.plt_faults = getparval(cfgcell,'plt_faults',0);

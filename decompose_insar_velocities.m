@@ -79,8 +79,8 @@ end
     asc_frames_ind,desc_frames_ind,fault_trace,gnss,borders] = load_inputs(par,insarpar);
 
 % colour palettes  (https://www.fabiocrameri.ch/colourmaps/)
-vik = load('vik.mat');
-batlow = load('batlow.mat');
+load('vik.mat');
+load('batlow.mat');
 cpt.vik = vik; cpt.batlow = batlow; 
 clear vik batlow
 
@@ -438,7 +438,6 @@ end
 
 % save frames / tracks
 if par.save_frames == 1
-    -40 40
     % toggle between tracks and frames depending on if the merge has
     % happened
     if par.merge_tracks_along == 2

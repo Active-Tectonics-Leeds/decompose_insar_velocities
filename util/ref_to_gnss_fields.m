@@ -51,10 +51,11 @@ if ~ismissing(par.use_stored_ref_planes)
             par.use_stored_ref_planes = missing;
         else
             % InSAR IDs are the same, ensure that they are in the same order
-            [~,~,sort_order] = intersect(resids.insar_id,insar_id,'stable')
+            [~,~,sort_order] = intersect(resids.insar_id,insar_id,'stable');
         end
         gnss_resid_plane = resids.gnss_resid_plane(:, :, sort_order);
         gnss_los = resids.gnss_los(:, :, sort_order);
+        
     else
         fprintf('Residual file does not exist. Calculating reference from scratch\n')
         par.use_stored_ref_planes = missing;
@@ -88,7 +89,7 @@ for ii = 1:nframes
         % subsidence and seismic)
         vel_deramp = deramp(x,y,vel_tmp);
         vel_deramp = vel_deramp - mean(vel_deramp(:),'omitnan');
-        vel_mask = vel_deramp>10 | vel_deramp<-10;
+        vel_mask = vel_deramp > par.refmask_max | vel_deramp < par.refmask_min;
         
         vel_tmp(vel_mask) = nan;
         
@@ -146,11 +147,11 @@ for ii = 1:nframes
                 % store
                 gnss_resid_plane(:,:,ii) = gnss_resid_filtered;
         end
-        
-        % for plotting
-        if par.plt_ref_gnss_indv == 1
-            vel_orig = vel(:,:,ii);
-        end
+    end
+    
+    % for plotting
+    if par.plt_ref_gnss_indv == 1
+        vel_orig = vel(:,:,ii);
     end
     
     % mask resid with vel (just for plotting)
